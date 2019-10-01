@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Zork
 {
@@ -25,6 +25,8 @@ namespace Zork
 
             Location = IndexOf(Rooms, "West of House");
             Assert.IsTrue(Location != (-1, -1));
+
+            string roomsFilename = args.Length > 0 ? args[0] : "Rooms.txt";
 
             Room previousRoom = null;
             Commands command = Commands.UNKNOWN;
