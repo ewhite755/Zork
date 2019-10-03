@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -20,7 +19,7 @@ namespace Zork
         }
         static void Main(string[] args)
         {
-            InitializeRoomDescription("Rooms.json");
+            InitializeRoomDescription("Zork.json");
             Console.WriteLine("Welcome to Zork!");
 
             Location = IndexOf(Rooms, "West of House");
@@ -151,12 +150,7 @@ namespace Zork
             RoomsFilename = 0
         }
 
-        private static Room[,] Rooms = 
-        {
-            { new Room("Rocky Trail"),    new Room("South of House"),   new Room("Canyon View")     },
-            { new Room("Forest"),         new Room("West of House"),    new Room("Behind House")    },
-            { new Room("Dense Woods"),    new Room("North of House"),   new Room("Clearing")        }
-        };
+        private static Room[,] Rooms;
 
         private static (int Row, int Column) Location;
     }
