@@ -19,7 +19,7 @@ namespace Zork
         }
         static void Main(string[] args)
         {
-            InitializeRoomDescription("Zork.json");
+            InitializeRoomDescription("Rooms.json");
             Console.WriteLine("Welcome to Zork!");
 
             Location = IndexOf(Rooms, "West of House");
