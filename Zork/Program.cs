@@ -20,7 +20,7 @@ namespace Zork
         }
         static void Main(string[] args)
         {
-            InitializeRoomDescription("Rooms.txt");
+            InitializeRoomDescription("Rooms.json");
             Console.WriteLine("Welcome to Zork!");
 
             Location = IndexOf(Rooms, "West of House");
@@ -126,34 +126,8 @@ namespace Zork
             return (-1, -1);
         }
 
-        private static void InitializeRoomDescription(string roomsFilename)
-        {
-            var roomMap = new Dictionary<string, Room>();
-            foreach (Room room in Rooms)
-            {
-                roomMap[room.Name] = room;
-            }
-
-
-
-            string[] lines = File.ReadAllLines(roomsFilename);
-            foreach (string line in lines)
-            {
-                const string fieldDelimiter = "##";
-                const int expectedFieldCount = 2;
-
-                string[] fields = line.Split(fieldDelimiter);
-                if (fields.Length != expectedFieldCount)
-                {
-                    throw new InvalidDataException("Invalid record");
-                }
-
-                string name = fields[(int)Fields.Name];
-                string description = fields[(int)Fields.Description];
-
-                roomMap[name].Description = description;
-            }
-        }
+        private static void InitializeRoomDescription(string roomsFilename) =>
+            Rooms = JsonConvert.DeserializeObject<Room[,]>(File.ReadAllText(roomsFilename));
 
 
         private static bool IsDirection(Commands command) => Directions.Contains(command);
@@ -177,7 +151,7 @@ namespace Zork
             RoomsFilename = 0
         }
 
-        private static readonly Room[,] Rooms = 
+        private static Room[,] Rooms = 
         {
             { new Room("Rocky Trail"),    new Room("South of House"),   new Room("Canyon View")     },
             { new Room("Forest"),         new Room("West of House"),    new Room("Behind House")    },
