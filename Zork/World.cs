@@ -1,18 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace Zork
 {
     public class World
     {
-        public string StartingLocation { get; set; }
-
         public HashSet<Room> Rooms { get; set; }
 
-        public Player SpawnPlayer()
+        [JsonIgnore]
+        public IReadOnlyDictionary<string, Room> RoomsByName => mRoomsByName;
+
+        public Player SpawnPlayer() => new Player(this, StartingLocation);
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
         {
-            return new Player(this, StartingLocation);
+            mRoomsByName = Rooms.ToDictionary(room => room.Name, room => room);
+
+            foreach (Room room in Rooms)
+            {
+                room.UpdateNeighbors(this);
+            }
         }
+
+        [JsonProperty]
+        private string StartingLocation { get; set; }
+
+        private Dictionary<string, Room> mRoomsByName;
     }
 }

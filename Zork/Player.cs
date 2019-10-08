@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Zork
 {
-    class Player
+    public class Player
     {
-        public World World { get; set; }
+        public World World { get; }
 
-        public Room Location { get; set; }
+        [JsonIgnore]
+        public Room Location { get; private set; }
         
+        [JsonIgnore]
         public string LocationName
         {
             get
@@ -18,7 +19,7 @@ namespace Zork
             }
             set
             {
-                Location = World?.Rooms.GetValueOrDefault(value);
+                Location = World?.RoomsByName.GetValueOrDefault(value);
             }
         }
 
@@ -26,6 +27,17 @@ namespace Zork
         {
             World = world;
             LocationName = startingLocation;
+        }
+
+        public bool Move(Directions direction)
+        {
+            bool isValidMove = Location.Neighbors.TryGetValue(direction, out Room destination);
+            if (isValidMove)
+            {
+                Location = destination;
+            }
+
+            return isValidMove;
         }
     }
 }
