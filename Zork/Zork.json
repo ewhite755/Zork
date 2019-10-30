@@ -1,6 +1,6 @@
 {
   "World": {
-    "StaringLocation": "Forest 1",
+    "StartingLocation": "Forest 1",
     "Rooms": [
         {
           "Name": "West of House",
